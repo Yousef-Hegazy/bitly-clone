@@ -23,3 +23,5 @@ spring:
     virtual:
       enabled: true
 
+jwt-config:
+  secret: ${JWT_SECRET}
