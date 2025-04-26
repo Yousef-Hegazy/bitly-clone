@@ -25,3 +25,8 @@ spring:
 
 jwt-config:
   secret: ${JWT_SECRET}
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true

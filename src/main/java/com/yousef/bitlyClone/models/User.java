@@ -1,6 +1,7 @@
 package com.yousef.bitlyClone.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Email
     private String email;
     private String password;
     private String firstName;
@@ -48,6 +50,14 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public String getActualUsername() {
+        return username;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 
     @Override

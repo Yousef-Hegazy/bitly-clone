@@ -46,14 +46,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        var userDetails = userDetailsService.loadUserByUsername(username);
-
-        if (userDetails == null || !jwtUtils.isTokenValid(jwt, userDetails)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            var userDetails = userDetailsService.loadUserByUsername(username);
+
+            if (userDetails == null || !jwtUtils.isTokenValid(jwt, userDetails)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+
             var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
             auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -68,6 +69,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         var path = request.getServletPath();
 
-        return path.contains("auth/");
+        return path.contains("auth/") || path.contains("swagger") || path.contains("api-docs");
     }
 }
