@@ -80,7 +80,7 @@ public class JwtUtilsImpl implements JwtUtils {
     private Claims extractClaims(String token) {
         return Jwts
                 .parser()
-                .decryptWith(getKey())
+                .verifyWith(getKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
@@ -92,16 +92,7 @@ public class JwtUtilsImpl implements JwtUtils {
         var username = userDetails.getUsername();
         var subj = extractUsername(token);
 
-        return !isTokenExpired(token) && username.equals(subj) && isTokenValid(token);
-    }
-
-    private Boolean isTokenValid(String token) {
-        try {
-            Jwts.parser().verifyWith(getKey()).build().parseSignedClaims(token);
-            return true;
-        } catch (JwtException e) {
-            return false;
-        }
+        return !isTokenExpired(token) && username.equals(subj);
     }
 
 }

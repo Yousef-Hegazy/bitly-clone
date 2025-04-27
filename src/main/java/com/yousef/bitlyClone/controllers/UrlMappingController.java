@@ -1,7 +1,9 @@
 package com.yousef.bitlyClone.controllers;
 
 import com.yousef.bitlyClone.dtos.MappingResponse;
+import com.yousef.bitlyClone.dtos.ShortenUrlRequest;
 import com.yousef.bitlyClone.services.urls.UrlMappingService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +23,7 @@ public class UrlMappingController {
     private final UrlMappingService urlMappingService;
 
     @PostMapping("/shorten")
-    public ResponseEntity<MappingResponse> createShortUrl(@RequestBody @NotEmpty
-                                                          @NotBlank
-                                                          String originalUrl, Authentication auth) {
-        return ResponseEntity.ok(urlMappingService.shortenUrl(originalUrl, auth));
+    public ResponseEntity<MappingResponse> createShortUrl(@Valid @RequestBody ShortenUrlRequest request, Authentication auth) {
+        return ResponseEntity.ok(urlMappingService.shortenUrl(request.originalUrl(), auth));
     }
 }

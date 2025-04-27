@@ -9,7 +9,7 @@ public record MappingResponse(
         Long id,
         String originalUrl,
         String shortenedUrl,
-        int ClickCount,
+        int clickCount,
         LocalDateTime createdAt,
         String username
 ) {

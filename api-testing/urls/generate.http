@@ -1,0 +1,8 @@
+POST http://localhost:8080/api/urls/shorten
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "originalUrl": "http://example.com/long-url"
+}
+
