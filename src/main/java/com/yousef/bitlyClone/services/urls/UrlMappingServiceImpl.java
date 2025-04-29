@@ -2,6 +2,7 @@ package com.yousef.bitlyClone.services.urls;
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.yousef.bitlyClone.dtos.MappingResponse;
+import com.yousef.bitlyClone.mappers.UrlMappingMapper;
 import com.yousef.bitlyClone.models.UrlMapping;
 import com.yousef.bitlyClone.models.User;
 import com.yousef.bitlyClone.repositories.UrlMappingRepository;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -31,14 +33,18 @@ public class UrlMappingServiceImpl implements UrlMappingService {
 
         var savedMapping = urlMappingRepository.save(urlMapping);
 
-        return MappingResponse.builder()
-                .id(savedMapping.getId())
-                .shortenedUrl(savedMapping.getShortUrl())
-                .originalUrl(savedMapping.getOriginalUrl())
-                .clickCount(savedMapping.getClickCount())
-                .username(savedMapping.getUser().getActualUsername())
-                .createdAt(savedMapping.getCreatedAt())
-                .build();
+        return UrlMappingMapper.toMappingResponse(savedMapping);
+    }
+
+    @Override
+    public List<MappingResponse> getMyUrls(Authentication auth) {
+        var user = (User) auth.getPrincipal();
+
+        var urlMappings = urlMappingRepository.findAllByUser(user);
+
+        if (urlMappings == null || urlMappings.isEmpty()) return List.of();
+
+        return UrlMappingMapper.toMappingResponseList(urlMappings);
     }
 
     private String generateShortUtl(String originalUrl) {
