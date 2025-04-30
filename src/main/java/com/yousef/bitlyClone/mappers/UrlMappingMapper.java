@@ -1,5 +1,6 @@
 package com.yousef.bitlyClone.mappers;
 
+import com.yousef.bitlyClone.dtos.ClickEventResponse;
 import com.yousef.bitlyClone.dtos.MappingResponse;
 import com.yousef.bitlyClone.models.UrlMapping;
 
